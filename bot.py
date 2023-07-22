@@ -37,7 +37,7 @@ args = parser.parse_args()
 paste = args.nopaste
 scan_image = args.image
 
-USER_ID = 141341662  # chipotletweets account id
+USER_ID = 133448051
 
 acc_path = "./.env"
 config_path = "./config.json"

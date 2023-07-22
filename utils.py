@@ -18,7 +18,6 @@ logging.basicConfig(
 
 logging.getLogger("httpx").setLevel(logging.WARNING)
 
-
 def turn_green(str):
     GREEN = "\033[32m"
     RESET = "\033[0m"
@@ -73,6 +72,9 @@ def paste_code(str, paste, coords):
 
 
 def find_code(str):
+    """
+        Text <> to 888222 
+    """
     pattern = "[\d\w&%$@!#]+ to 888222"  # find pattern 'blahblahblah to 888222'
     matches = re.findall(pattern, str)
     if len(matches) == 0:
@@ -80,8 +82,8 @@ def find_code(str):
 
     code = matches[0].split()[0]
 
-    second = ""
-    if len(code.split("FREETHREES")) > 1:
-        second = code.split("FREETHREES")[1]
+    ## second = ""
+    ## if len(code.split("FREETHREES")) > 1:
+    ##     second = code.split("FREETHREES")[1]
 
-    return code, second
+    return code #, second
