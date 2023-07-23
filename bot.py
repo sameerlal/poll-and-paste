@@ -17,7 +17,6 @@ logging.basicConfig(
     format="\x1b[32m%(asctime)s\x1b[0m | \x1b[37m%(levelname)s\x1b[0m | \x1b[36m%(module)s:%(funcName)s:%(lineno)d\x1b[0m - %(message)s",
 )
 
-
 # ------------ handling exit ------------
 def handle_exit(sig, frame):
     logging.info("Exiting.....")
@@ -38,6 +37,7 @@ paste = args.nopaste
 scan_image = args.image
 
 USER_ID = 133448051
+# USER_ID = "1682586506345447426" # Test account
 
 acc_path = "./.env"
 config_path = "./config.json"
@@ -51,7 +51,7 @@ if not os.path.exists(codes_path):
 codes = set(line.strip() for line in open("codes.txt"))
 
 
-def handle_code(code, second, paste):
+def handle_code(code, paste):
     if code in codes:
         logging.info(f"Code already used: {code}")
         return
@@ -60,7 +60,7 @@ def handle_code(code, second, paste):
 
     logging.info("###########################################")
     for _ in range(8):
-        logging.info(f"CODE FOUND: {code}  or  {second}")
+        logging.info(f"CODE FOUND: {code}")
     logging.info("###########################################")
     codes.add(code)
 
@@ -150,9 +150,9 @@ async def main():
             tweet_content = handle_img()
             logging.info(tweet_content)
 
-        code, second = find_code(tweet_content)
+        code = find_code(tweet_content)
         if code != "":
-            handle_code(code, second, paste)
+            handle_code(code, paste)
         elif not scan_image:
             tweet_time, current_time = get_time(tweet)
             logging.info(
@@ -160,7 +160,7 @@ async def main():
             )
 
         time.sleep(
-            1.85
+            5 #1.85
         )  # twitter allows 500ish requests every 15 minuts ~= 1 request every 1.8 seconds
 
 

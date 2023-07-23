@@ -53,12 +53,12 @@ def handle_img():
 def check_tweets(tweets):
     if len(tweets) < 1:
         logging.info("No tweets found")
-        time.sleep(.10)
         return False
     return True
 
 
 def paste_code(str, paste, coords):
+    print("pasting .... ", str)
     pyperclip.copy(str)
     if not paste:
         X, Y = coords
@@ -78,7 +78,7 @@ def find_code(str):
     pattern = "[\d\w&%$@!#]+ to 888222"  # find pattern 'blahblahblah to 888222'
     matches = re.findall(pattern, str)
     if len(matches) == 0:
-        return ("", "")
+        return ""
 
     code = matches[0].split()[0]
 
