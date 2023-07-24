@@ -6,7 +6,8 @@ import time
 
 def login():
     print()
-    print("Twitter sign in")
+    print("Twitter sign in - Add account")
+    print("This will be stored as a plain text file in your local folder")
     print("#########################")
     print()
 
@@ -14,11 +15,11 @@ def login():
     email = input("Twitter email: ")
     password = input("Twitter password: ")
 
-    with open(".env", "w") as f:
-        f.write(f"USERNAME={username}\nEMAIL={email}\nPASSWORD={password}\n")
+    with open(".env", "a") as f:
+        f.write(f"{username},{password},{email},{password}\n")
 
     print()
-    print("Account info successfully updated")
+    print("Account info successfully updated (1.5 sec sleep)")
     print()
     time.sleep(1.5)
 

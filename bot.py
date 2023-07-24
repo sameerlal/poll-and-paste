@@ -79,19 +79,26 @@ def load_config():
 
 
 def load_acc():
-    env_vars = dotenv_values()
-    USERNAME = env_vars["USERNAME"]
-    EMAIL = env_vars["EMAIL"]
-    PASSWORD = env_vars["PASSWORD"]
 
-    return USERNAME, EMAIL, PASSWORD
+    with open(".env", "r") as f:
+        info = f.read().split("\n")
+    print("found info = ")
+    for line in info:
+        print(line)
+    return [item.split(",") for item in info if item is not ""]
+    # env_vars = dotenv_values()
+    # USERNAME = env_vars["USERNAME"]
+    # EMAIL = env_vars["EMAIL"]
+    # PASSWORD = env_vars["PASSWORD"]
+
+    # return USERNAME, EMAIL, PASSWORD
 
 
 def choose_option():
     options = [
         "1) Run bot",
         "2) Reconfigure cursor",
-        "3) Sign in / Change account info",
+        "3) Add an additional account (new)",
         "4) Exit",
     ]
     option, index = pick.pick(
@@ -130,16 +137,25 @@ async def main():
 
     if not scan_image:
         pool = AccountsPool()
-        USERNAME, EMAIL, PASSWORD = load_acc()
+        accounts = load_acc()
+        
+        print("----------")
+        print(accounts)
 
-        await pool.add_account(USERNAME, PASSWORD, EMAIL, PASSWORD)
+        for usnm,pw,email in accounts:
+            await pool.add_account(usnm,pw,email,pw)
         await pool.login_all()
 
         api = API(pool)
 
-    while True:
+    cnt = 0
+    while cnt < 600:
+        print("Query = ", cnt)
+        cnt += 1
         if not scan_image:
+            print("q.")
             tweets = await gather(api.user_tweets(USER_ID, limit=1))
+            print("..")
 
             if check_tweets(tweets) is False:
                 continue
@@ -160,8 +176,9 @@ async def main():
             )
 
         time.sleep(
-            5 #1.85
+            0.2 #1.85
         )  # twitter allows 500ish requests every 15 minuts ~= 1 request every 1.8 seconds
+    logging.log("END RUN..")
 
 
 if __name__ == "__main__":
